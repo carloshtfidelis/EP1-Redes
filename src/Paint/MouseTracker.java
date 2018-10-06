@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+//Irá seguir e pegar as coordenadas do mouse
 public class MouseTracker implements MouseListener,MouseMotionListener{
 
 	private DrawPanel drawPanel;
@@ -14,7 +15,7 @@ public class MouseTracker implements MouseListener,MouseMotionListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		drawPanel.addDesenho(e.getX(),e.getY());
+		drawPanel.addDesenho(e.getX(),e.getY());//Pega as coordenadas
 		drawPanel.repaint();
 	}
 
@@ -30,7 +31,7 @@ public class MouseTracker implements MouseListener,MouseMotionListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		drawPanel.reset();
+		drawPanel.reset();//Quando o mouse é solto limpa a arrayList
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class MouseTracker implements MouseListener,MouseMotionListener{
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		drawPanel.addDesenho(e.getX(), e.getY());
+		drawPanel.addDesenho(e.getX(), e.getY());//Pega coordenadas
 		drawPanel.repaint();
 	}
 

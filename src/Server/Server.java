@@ -14,7 +14,7 @@ public class Server extends JFrame{
 	private ServerSocket server;
 	private Socket connection;
 	private int numOfUsers = 0;
-	private ArrayList<ServerThread> listaDeThreads;
+	private ArrayList<ServerThread> listaDeThreads; //Lista de clientes
 	
 	public Server(){
 		
@@ -26,7 +26,7 @@ public class Server extends JFrame{
 		{
 		    public void windowClosing(WindowEvent e)
 		    {
-		    	sendToAll("END",-1);
+		    	sendToAll("100;END;",-1);//Mensagem padrão quando fecha a janela
 		    }
 		});
 		
@@ -42,7 +42,7 @@ public class Server extends JFrame{
 	
 	public void start(){
 		try{
-			server = new ServerSocket(8765, 100);
+			server = new ServerSocket(8765, 100);//Configuração do socket
 			while(true){
 				try{
 					waitForConnection();
@@ -67,11 +67,13 @@ public class Server extends JFrame{
 			--numOfUsers;
 			listaDeThreads.remove(i);
 			
+			// Redefini indices das threads
 			for(int j = i; j<listaDeThreads.size(); j++)
 				listaDeThreads.get(j).updateIndice(j);
 		}
 	}
 		
+	//Servidor espera conexão
 	 private void waitForConnection() throws IOException{
 		showMenssagem("Esperando conexão...\n");
 		connection = server.accept();
@@ -80,6 +82,7 @@ public class Server extends JFrame{
 		showMenssagem("Conectado com "+connection.getInetAddress().getHostName()+"\n");
 	}
 	
+	//Anexa mensagem no log
 	public void showMenssagem(final String m){
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
@@ -88,6 +91,7 @@ public class Server extends JFrame{
 		});
 	}	
 	
+	//Envia mensagem a todos os usuario menos o usuario que enviou
 	public void sendToAll(String m, int j){		
 		for(int i = 0; i<listaDeThreads.size(); i++)
 			if(i!=j)

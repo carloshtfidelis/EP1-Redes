@@ -28,8 +28,7 @@ public class DrawPanel extends JPanel{
 		
 	}
 	
-	//ArrayList de todos os desenhos feitos
-	private ArrayList<Desenho> desenhos = new ArrayList<>();
+	private ArrayList<Desenho> desenhos = new ArrayList<>();//ArrayList de todos os desenhos feitos
 	private int i = 1, thickness = 4;
 	private boolean clear = true;
 	private Color cor = Color.BLACK;
@@ -38,6 +37,7 @@ public class DrawPanel extends JPanel{
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D)(g);
 				
+		//Vai limpar a tela
 		if(clear){
 			super.paintComponent(g2);
 			reset();
@@ -47,6 +47,7 @@ public class DrawPanel extends JPanel{
 		g2.setStroke(new BasicStroke(thickness));
 		g2.setColor(cor);		
 		
+		//Pega a coordenada atual com a anterior e cria uma linha entre as duas
 		if(1<desenhos.size()){				
 			g2.drawLine(desenhos.get(i-1).x, desenhos.get(i-1).y,
 							desenhos.get(i).x, desenhos.get(i).y);
@@ -59,6 +60,7 @@ public class DrawPanel extends JPanel{
 		
 	}
 	
+	//Limpa arrayList
 	public void reset(){
 		desenhos.clear();
 		i=1;

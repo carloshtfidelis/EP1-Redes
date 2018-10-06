@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
+//Botão que configura a grossura e cor do lápis
 public class ButtonLapis extends JButton implements ActionListener{
 	private DrawPanel drawPanel;
 	private int thickness = 4;

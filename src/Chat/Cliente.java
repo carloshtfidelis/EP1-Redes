@@ -23,11 +23,12 @@ public class Cliente extends JFrame implements Runnable{
 		
 		//Configurando textField
 		texto = new JTextField();
-		texto.setEditable(false);
+		texto.setEditable(false); // Impede que o cliente digite no chat enquanto offline
 		texto.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enviaMenssagem(e.getActionCommand());
+				//Todas as mensagens escritas serão transmitidas já formatadas com o protocolo
+				enviaMenssagem("200;"+nome+";: "+e.getActionCommand()+"\n");
 				texto.setText("");
 			}			
 				
@@ -39,7 +40,7 @@ public class Cliente extends JFrame implements Runnable{
 		    public void windowClosing(WindowEvent e)
 		    {
 		    	if(isConnected())
-		    		enviaMenssagem("END");
+		    		enviaMenssagem("100;END;");
 		    }
 		});
 		
@@ -49,14 +50,14 @@ public class Cliente extends JFrame implements Runnable{
 		janelaChat.setLineWrap(true);
 		janelaChat.setEditable(false);
 		add(new JScrollPane(janelaChat));
-		
-		//Configurando janela
 	}
 		
+	//Retorna se o cliente está conectado
 	public boolean isConnected(){
 		return conectado;
 	}
 	
+	//Metodo tentará conexão
 	private void connect() throws IOException{
 		showMenssagem("Tentando conexão...\n");
 		int tries = 1;
@@ -64,6 +65,7 @@ public class Cliente extends JFrame implements Runnable{
 		
 		while(true){
 			try{
+				//10 tentativas de conexão até desistir
 				if(tries == 10)
 					break;				
 				tries++;
@@ -102,6 +104,7 @@ public class Cliente extends JFrame implements Runnable{
 			showMenssagem("Incapaz de conectar com servidor =(\n");
 	}
 	
+	//Configura streams de entrada e saida
 	private void setupStreams() throws IOException{
 		output = new ObjectOutputStream(connection.getOutputStream());
 		output.flush();
@@ -109,12 +112,13 @@ public class Cliente extends JFrame implements Runnable{
 		input = new ObjectInputStream(connection.getInputStream());
 	}
 	
+	//Metodo roda enquanto comunicando
 	private void chatting() throws IOException{
-		podeDigitar(true);
+		podeDigitar(true); // permiti que o cliente escreva
 		
 		do{
 			try{
-				menssagem = (String) input.readObject();
+				menssagem = (String) input.readObject(); //Recebe mensagens
 				showMenssagem(menssagem);
 				
 			}catch(ClassNotFoundException cnf){
@@ -128,17 +132,19 @@ public class Cliente extends JFrame implements Runnable{
 		}while(!menssagem.equals("SERVER - END"));
 	}
 	
+	//Metodo que vai enviar as mensagens
 	private void enviaMenssagem(String menssagem){
 		try{
-			output.writeObject(nome+" :"+menssagem+"\n");
+			output.writeObject(menssagem);//Escreve mensagem
 			output.flush();
-			showMenssagem(nome+" :"+menssagem+"\n");
+			showMenssagem(menssagem);
 			
 		}catch(IOException ioe){
 			janelaChat.append("Não conssigo mandar essa menssagem");
 		}
 	}
 	
+	// Metodo defini permissão se o cliente pode escrever ou não
 	private void podeDigitar(final boolean b){
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
@@ -147,6 +153,7 @@ public class Cliente extends JFrame implements Runnable{
 		});
 	}
 	
+	//Anexa mensagens no chat do cliente
 	private void showMenssagem(final String m){
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
@@ -155,6 +162,7 @@ public class Cliente extends JFrame implements Runnable{
 		});
 	}
 	
+	//Fecha conexão
 	private void close(){
 		showMenssagem("Conexão fechada...\nBem Vindo "+nome);
 		podeDigitar(false);
@@ -175,7 +183,7 @@ public class Cliente extends JFrame implements Runnable{
 		setSize(350,300);
 		setVisible(true);		
 		
-		nome = JOptionPane.showInputDialog("Qual é o seu nome?");
+		nome = JOptionPane.showInputDialog("Qual é o seu nome?");//Pega nome do usuario
 		
 		try{
 			connect();

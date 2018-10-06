@@ -2,6 +2,7 @@ package Paint;
 
 import javax.swing.JFrame;
 
+//Defini janela da pintura com barra de ferramentas
 public class JanelaDePintura extends JFrame implements Runnable{
 	
 	private static final long serialVersionUID = -7229136225639948575L;

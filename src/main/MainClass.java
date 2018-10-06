@@ -5,15 +5,16 @@ import Paint.JanelaDePintura;
 
 public class MainClass {
 	
+	//Abre a janela de Chat e de desenho
 	public static void main(String[] args){
 		JanelaDePintura jdp = new JanelaDePintura();
 		Cliente cliente = new Cliente("127.0.0.1");
 		
-		jdp.run();
-		//Thread janelaDePintura = new Thread(jdp);
-		//Thread janelaDoChat = new Thread(cliente);
+		//Dessa meneira é possivel abrir as duas janelas
+		Thread janelaDePintura = new Thread(jdp);
+		Thread janelaDoChat = new Thread(cliente);
 		
-		//janelaDePintura.start();
-		//janelaDoChat.start();
+		janelaDePintura.start();
+		janelaDoChat.start();
 	}
 }

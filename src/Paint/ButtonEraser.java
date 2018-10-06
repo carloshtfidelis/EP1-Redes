@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
+//Botão que configura a grossura e cor do lápis criando uma borracha
 public class ButtonEraser extends JButton implements ActionListener{
 	private DrawPanel drawPanel;
 	private final int thickness = 20;

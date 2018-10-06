@@ -41,6 +41,7 @@ public class ServerThread extends Thread{
 		this.indice = i;
 	}
 	
+	//Configura streams de entrada e saida
 	private void setupStreams() throws IOException{
 		output = new ObjectOutputStream(connection.getOutputStream());
 		output.flush();
@@ -48,15 +49,17 @@ public class ServerThread extends Thread{
 		input = new ObjectInputStream(connection.getInputStream());
 	}
 	
+	//Metodo roda enquanto comunicando
 	private void chatting() throws IOException{
 		String menssagem = "Conetado!\n";
-		
+		String[] array;
 		enviaMenssagem(menssagem);
 		
 		do{
 			try{
 				menssagem = (String) input.readObject();
 				showMenssagem(menssagem);
+				
 				server.sendToAll(menssagem, indice);
 				
 			}catch(ClassNotFoundException cnf){
